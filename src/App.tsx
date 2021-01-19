@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import HomePage from "./components/pages/Home/Home";
+import { ApiApi, Candidate, Job, Client } from "./util/gen/api/dist";
+import AllJobsPage from "./components/pages/Jobs/allJobs";
+import OutReachEditorPage from "./components/pages/OutReachEditor/OutReachEditor";
 
 function App() {
+  const initialClient: Client = { name: "", jobs: [], id: 0 };
+  const [client, setClient] = useState(initialClient);
+  const apiService = new ApiApi(undefined, "http://localhost:8000");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/alljobs/:id">
+          <OutReachEditorPage apiService={apiService} />
+        </Route>
+        <Route path="/alljobs">
+          <AllJobsPage apiService={apiService} />
+        </Route>
+        <Route path="/">
+          <HomePage
+            client={client}
+            apiService={apiService}
+            setClient={setClient}
+          />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
