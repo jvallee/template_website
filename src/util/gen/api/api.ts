@@ -92,12 +92,6 @@ export interface Job {
      * @type {string}
      * @memberof Job
      */
-    subject?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Job
-     */
     template: string;
     /**
      * 
@@ -111,6 +105,12 @@ export interface Job {
      * @memberof Job
      */
     templateDraft?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Job
+     */
+    subject?: string;
     /**
      * 
      * @type {number}
@@ -191,12 +191,6 @@ export interface PatchedJob {
      * @type {string}
      * @memberof PatchedJob
      */
-    subject?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PatchedJob
-     */
     template?: string;
     /**
      * 
@@ -210,6 +204,12 @@ export interface PatchedJob {
      * @memberof PatchedJob
      */
     templateDraft?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PatchedJob
+     */
+    subject?: string;
     /**
      * 
      * @type {number}

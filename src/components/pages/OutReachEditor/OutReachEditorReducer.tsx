@@ -11,6 +11,7 @@ export type OutReachEditorReducerState = {
   isDirty: boolean;
   isModalOpen: boolean;
   content: string;
+  subject: string;
 };
 
 export type OutReachEditorActions =
@@ -30,11 +31,15 @@ export type OutReachEditorActions =
     }
   | {
       type: "CLOSE_MODAL";
-      payload: EditorState;
+      payload: { editorState: EditorState; loadedContent: string };
     }
   | {
       type: "EDITOR_LOAD_JOB";
       payload: Job;
+    }
+  | {
+      type: "SUBJECT_CHANGE";
+      payload: string;
     }
   | {
       type: "EDITOR_LOADED_200";
@@ -45,9 +50,12 @@ export default function reducer(
   state: OutReachEditorReducerState,
   action: OutReachEditorActions
 ): OutReachEditorReducerState {
+  debugger;
   switch (action.type) {
     case "EDITOR_EDITED_200":
       return { ...state, editorState: action.payload, isDirty: true };
+    case "SUBJECT_CHANGE":
+      return { ...state, subject: action.payload, isDirty: true };
     case "EDITOR_LOADED_200":
       return {
         ...state,
@@ -65,6 +73,7 @@ export default function reducer(
         isDirty: false,
         content: action.payload.templateDraft ?? "",
         job: action.payload,
+        subject: action.payload.subject ?? "",
       };
 
     case "OPEN_MODAL":
@@ -76,7 +85,8 @@ export default function reducer(
     case "CLOSE_MODAL":
       return {
         ...state,
-        editorState: action.payload,
+        editorState: action.payload.editorState,
+        content: action.payload.loadedContent,
         isModalOpen: false,
       };
     case "EDITOR_LOAD_JOB":
@@ -84,6 +94,7 @@ export default function reducer(
         ...state,
         job: action.payload,
         content: action.payload.template,
+        subject: action.payload.subject ?? "",
       };
     default:
       return state;

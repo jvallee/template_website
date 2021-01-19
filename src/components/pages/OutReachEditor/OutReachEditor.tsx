@@ -43,12 +43,16 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
     isDirty: false,
     isModalOpen: false,
     content: "",
+    subject: "",
   } as OutReachEditorReducerState);
 
   const modalClickHelper = (loadedContent: string) => {
     dispatch({
       type: "CLOSE_MODAL",
-      payload: stringToEditorState(loadedContent),
+      payload: {
+        editorState: stringToEditorState(loadedContent),
+        loadedContent: loadedContent,
+      },
     });
   };
 
@@ -62,6 +66,7 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
 
   useEffect(() => {
     if (state.job == undefined) {
+      // this will happen only once on page load
       loadDataIn(id, dispatch, apiService);
     } else if (
       state.isDirty === true &&
@@ -85,6 +90,7 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
         template: value,
         hasDraft: false,
         templateDraft: value,
+        subject: state.subject,
       } as Job)
       .then((value) => {
         dispatch({ type: "EDITOR_POSTED", payload: value.data });
@@ -96,16 +102,18 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
   };
   const subjectChangeHandler = (
     event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {};
+  ) => {
+    dispatch({ type: "SUBJECT_CHANGE", payload: event.target.value });
+  };
 
   const init = ContentState.createFromText("plain text");
 
   return (
     <div>
       <Prompt
-        when={true}
+        when={(state.job?.template ?? "") != state.content}
         message={(location) =>
-          `Are you sure you want to go to ${location.pathname}`
+          `Are you sure you want to go to ${location.pathname}, you have unsaved changes`
         }
       />
       <Header />
@@ -118,7 +126,10 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
         <h2>{"Draft for " + state.job?.name}</h2>
         <Button
           onClick={saveClickHandler}
-          disabled={(state.job?.template ?? "") == state.content}
+          disabled={
+            (state.job?.template ?? "") == state.content &&
+            state.job?.subject == state.subject
+          }
           style={{ height: "30px" }}
         >
           Save Template
@@ -128,17 +139,8 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
         id="standard-basic"
         label="Subject"
         onChange={subjectChangeHandler}
-        value={"hello my old friend"}
+        value={state.subject}
       ></TextField>
-      {/* <div className={"EditorHeader"}>
-        <h2>{"Draft for " + state.job?.name}</h2>
-        <Button
-          onClick={saveClickHandler}
-          disabled={(state.job?.template ?? "") == state.content}
-        >
-          Save Template
-        </Button>
-      </div> */}
       <Editor
         initialContentState={convertToRaw(init)}
         editorState={state.editorState}
@@ -185,7 +187,7 @@ const editorEditedHandler = (
         ...state.job,
         templateDraft: editor_conent,
         hasDraft: true,
-        // subject: "hello my old friend",
+        subject: state.subject,
       } as Job)
       .then((value) => {
         debugger;
