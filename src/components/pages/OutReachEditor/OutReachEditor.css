@@ -17,6 +17,11 @@
 .EditorHeader {
     display: flex;
     justify-content: space-between;
+    /* padding-left: 20px;
+    padding-right: 20px; */
+}
+
+.OutReachEditor_root {
     padding-left: 20px;
     padding-right: 20px;
 }

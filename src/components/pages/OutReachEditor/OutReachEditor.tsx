@@ -109,14 +109,13 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
   const init = ContentState.createFromText("plain text");
 
   return (
-    <div>
+    <div className={"OutReachEditor_root"}>
       <Prompt
         when={(state.job?.template ?? "") != state.content}
         message={(location) =>
           `Are you sure you want to go to ${location.pathname}, you have unsaved changes`
         }
       />
-      <Header />
       <Modal
         clickSavedHandler={useSavedHandler}
         clickDraftHandler={useDraftHandler}
@@ -140,6 +139,7 @@ const OutReachEditorPage: React.FC<OutReachEditorProps> = (props) => {
         label="Subject"
         onChange={subjectChangeHandler}
         value={state.subject}
+        style={{ marginBottom: "20px" }}
       ></TextField>
       <Editor
         initialContentState={convertToRaw(init)}

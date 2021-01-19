@@ -5,6 +5,7 @@ import HomePage from "./components/pages/Home/Home";
 import { ApiApi, Candidate, Job, Client } from "./util/gen/api/dist";
 import AllJobsPage from "./components/pages/Jobs/allJobs";
 import OutReachEditorPage from "./components/pages/OutReachEditor/OutReachEditor";
+import Header from "./components/common/Header/Header";
 
 function App() {
   const initialClient: Client = { name: "", jobs: [], id: 0 };
@@ -12,23 +13,26 @@ function App() {
   const apiService = new ApiApi(undefined, "http://localhost:8000");
 
   return (
-    <Router>
-      <Switch>
-        <Route path="/alljobs/:id">
-          <OutReachEditorPage apiService={apiService} />
-        </Route>
-        <Route path="/alljobs">
-          <AllJobsPage apiService={apiService} />
-        </Route>
-        <Route path="/">
-          <HomePage
-            client={client}
-            apiService={apiService}
-            setClient={setClient}
-          />
-        </Route>
-      </Switch>
-    </Router>
+    <div>
+      <Header />
+      <Router>
+        <Switch>
+          <Route path="/alljobs/:id">
+            <OutReachEditorPage apiService={apiService} />
+          </Route>
+          <Route path="/alljobs">
+            <AllJobsPage apiService={apiService} />
+          </Route>
+          <Route path="/">
+            <HomePage
+              client={client}
+              apiService={apiService}
+              setClient={setClient}
+            />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
