@@ -7,7 +7,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import { OutReachEditorActions } from "../OutReachEditorReducer";
 
 type ModalProps = {
   clickDraftHandler: () => void;
@@ -28,12 +27,11 @@ const Modal: React.FC<ModalProps> = (props) => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
+          {"Would you like to view Draft or Published Templated"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
+            You have an unpublished drfat would you like to view it?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

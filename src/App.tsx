@@ -10,7 +10,7 @@ import Header from "./components/common/Header/Header";
 function App() {
   const initialClient: Client = { name: "", jobs: [], id: 0 };
   const [client, setClient] = useState(initialClient);
-  const apiService = new ApiApi(undefined, "http://localhost:8000");
+  const apiService = new ApiApi(undefined, "http://127.0.0.1:8000");
 
   return (
     <div>
